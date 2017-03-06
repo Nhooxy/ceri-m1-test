@@ -1,21 +1,24 @@
 package fr.univavignon.pokedex.api;
 
-import junit.framework.*;
 import org.junit.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.*;
+import org.mockito.*;
+import org.mockito.junit.*;
 
 /**
  * Classe de test de l'interface IPokedexFactory.
  */
-public class IPokedexFactoryTest extends TestCase {
+public class IPokedexFactoryTest {
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private Pokemon pokemonMock;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        
-        User user = Mockito.mock(User.class);
+        when(pokemonMock.getName()).thenReturn("Bulbizarre");
+        when(pokemonMock.getName()).thenThrow(new Exception());
     }
 
     /**
@@ -28,6 +31,6 @@ public class IPokedexFactoryTest extends TestCase {
      */
     @Test
     void testCreatePokedex() {
-
+        assertEquals("Bulbizarre", this.pokemonMock.getName());
     }
 }

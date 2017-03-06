@@ -7,6 +7,10 @@
     <version>1.0</version>
     <name>Pierre Pokedex</name>
     <url>https://github.com/Nhooxy/ceri-m1-test</url>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -17,7 +21,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
+            <version>1.10.19</version>
         </dependency>
     </dependencies>
     <profiles>
