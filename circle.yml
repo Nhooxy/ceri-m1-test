@@ -10,3 +10,7 @@ general:
   branches:
     only:
       - master
+
+test:
+  override:
+    - maven test
