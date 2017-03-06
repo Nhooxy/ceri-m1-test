@@ -13,4 +13,4 @@ general:
 
 test:
   override:
-    - maven test
+    - mvn test
