@@ -6,15 +6,7 @@ machine:
   java:
     version: oraclejdk8
 
-## Customize checkout
-#checkout:
-#  post:
-#    - git submodule sync
-#    - git submodule update --init # use submodules
-
-## Customize deployment commands
-deployment:
-  staging:
-    branch: master
-    heroku:
-          appname: staging
+general:
+  branches:
+    only:
+      - master
