@@ -17,4 +17,4 @@ deployment:
   staging:
     branch: master
     heroku:
-          appname: Pokedex-Pierre
+          appname: staging
