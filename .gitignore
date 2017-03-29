@@ -3,4 +3,6 @@
 .project
 .idea
 
+target
+target/*
 *.class
