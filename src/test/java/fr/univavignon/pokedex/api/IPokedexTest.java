@@ -17,7 +17,10 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.when;
 
-public final class IPokedexTest {
+/**
+ * Classe de test de l'interface IPokedex.
+ */
+public class IPokedexTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
