@@ -17,7 +17,7 @@ public class IPokedexFactoryTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private static Pokemon pokemonMock = new Pokemon(
+    protected static Pokemon pokemonMock = new Pokemon(
             0,
             "Bulbizarre",
             126,
@@ -31,7 +31,7 @@ public class IPokedexFactoryTest {
     );
 
     @Mock
-    private static IPokemonFactory pokemonFactoryMock;
+    protected static IPokemonFactory pokemonFactoryMock;
 
     @Before
     public void setUp() {
