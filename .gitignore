@@ -4,5 +4,3 @@
 .idea
 
 target
-target/*
-*.class
