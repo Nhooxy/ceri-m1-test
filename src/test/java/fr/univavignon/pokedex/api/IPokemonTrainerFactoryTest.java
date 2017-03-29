@@ -14,14 +14,12 @@ import static org.mockito.Mockito.when;
 
 public class IPokemonTrainerFactoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @Mock
     protected static IPokemonTrainerFactory pokemonTrainerFactoryMock;
-
     @Mock
     protected static IPokedexFactory pokedexFactoryMock;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() {

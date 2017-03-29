@@ -13,11 +13,10 @@ import static org.mockito.Mockito.when;
 
 public class IPokemonMetadataProviderTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @Mock
     protected static IPokemonMetadataProvider pokemonMetadataProviderMock;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws PokedexException {

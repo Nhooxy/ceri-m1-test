@@ -22,12 +22,8 @@ import static org.mockito.Mockito.when;
  */
 public class IPokedexTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @Mock
     protected static IPokedex pokedexMock;
-
     protected static Pokemon bulbizarre = new Pokemon(
             0,
             "Bulbizarre",
@@ -40,7 +36,6 @@ public class IPokedexTest {
             4,
             56
     );
-
     protected static Pokemon aquali = new Pokemon(
             133,
             "Aquali",
@@ -53,9 +48,10 @@ public class IPokedexTest {
             4,
             100
     );
-
     protected static Comparator<Pokemon> comparizonName = Comparator.comparing(PokemonMetadata::getName);
     protected static Comparator<Pokemon> comparizonAtk = Comparator.comparing(PokemonMetadata::getAttack);
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws PokedexException {

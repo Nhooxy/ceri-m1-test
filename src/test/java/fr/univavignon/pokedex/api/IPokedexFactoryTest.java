@@ -15,9 +15,6 @@ import static org.mockito.Mockito.when;
  * Classe de test de l'interface IPokedexFactory.
  */
 public class IPokedexFactoryTest {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     protected static Pokemon pokemonMock = new Pokemon(
             0,
             "Bulbizarre",
@@ -30,9 +27,10 @@ public class IPokedexFactoryTest {
             4,
             56
     );
-
     @Mock
     protected static IPokemonFactory pokemonFactoryMock;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() {

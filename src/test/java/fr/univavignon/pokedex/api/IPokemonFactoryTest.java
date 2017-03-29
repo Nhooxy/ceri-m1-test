@@ -16,12 +16,8 @@ import static org.mockito.Mockito.when;
  */
 public class IPokemonFactoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @Mock
     protected static IPokemonFactory pokemonFactoryMock;
-
     protected static Pokemon bulbizarre = new Pokemon(
             0,
             "Bulbizarre",
@@ -34,6 +30,8 @@ public class IPokemonFactoryTest {
             4,
             56
     );
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws PokedexException {
