@@ -49,10 +49,7 @@ public class IPokedexTest {
             100
     );
 
-    @Mock
-    protected static IPokedex pokedex;
-
-    protected static final int[] pokedex_size = {0};
+    protected static final int[] pokedexSize = {0};
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -60,22 +57,22 @@ public class IPokedexTest {
     @Before
     public void setUp() throws PokedexException {
         MockitoAnnotations.initMocks(this);
-        pokedex_size[0] = 0;
-        when(pokedex.size()).thenAnswer(i -> pokedex_size[0]);
-        when(pokedex.addPokemon(any())).then(i -> pokedex_size[0]++);
+        pokedexSize[0] = 0;
+        when(pokedexMock.size()).thenAnswer(i -> pokedexSize[0]);
+        when(pokedexMock.addPokemon(any())).then(i -> pokedexSize[0]++);
 
-        when(pokedex.getPokemon(0)).thenReturn(bulbizarre);
-        when(pokedex.getPokemon(1)).thenThrow(new PokedexException("Invalid index"));
+        when(pokedexMock.getPokemon(0)).thenReturn(bulbizarre);
+        when(pokedexMock.getPokemon(1)).thenThrow(new PokedexException("Invalid index"));
 
         List<Pokemon> list1 = new ArrayList<>();
         List<Pokemon> list2 = new ArrayList<>();
         list1.add(bulbizarre);
         list1.add(aquali);
 
-        when(pokedex.getPokemons()).thenReturn(Collections.unmodifiableList(list1));
+        when(pokedexMock.getPokemons()).thenReturn(Collections.unmodifiableList(list1));
         list2.add(aquali);
         list2.add(bulbizarre);
-        when(pokedex.getPokemons(any()))
+        when(pokedexMock.getPokemons(any()))
                 .thenReturn(Collections.unmodifiableList(list2))
                 .thenReturn(Collections.unmodifiableList(list1));
     }
@@ -85,7 +82,7 @@ public class IPokedexTest {
      */
     @Test
     public void testSize() {
-        assertEquals(0, pokedex.size());
+        assertEquals(0, pokedexMock.size());
     }
 
     /**
@@ -94,10 +91,10 @@ public class IPokedexTest {
      */
     @Test
     public void testAddPokemon() {
-        assertEquals(0, pokedex.addPokemon(bulbizarre));
-        assertEquals(1, pokedex.size());
-        assertEquals(1, pokedex.addPokemon(bulbizarre));
-        assertEquals(2, pokedex.size());
+        assertEquals(0, pokedexMock.addPokemon(bulbizarre));
+        assertEquals(1, pokedexMock.size());
+        assertEquals(1, pokedexMock.addPokemon(bulbizarre));
+        assertEquals(2, pokedexMock.size());
     }
 
     /**
@@ -113,9 +110,9 @@ public class IPokedexTest {
             e.printStackTrace();
         }
         try {
-            pokedex.getPokemon(1);
+            pokedexMock.getPokemon(1);
         } catch (PokedexException e) {
-            e.printStackTrace();
+            assertEquals("Invalid index", e.getMessage());
         }
     }
 
@@ -124,12 +121,12 @@ public class IPokedexTest {
      */
     @Test
     public void testGetPokemons() throws PokedexException {
-        pokedex.addPokemon(bulbizarre);
-        pokedex.addPokemon(aquali);
-        List<Pokemon> list = pokedex.getPokemons();
+        pokedexMock.addPokemon(bulbizarre);
+        pokedexMock.addPokemon(aquali);
+        List<Pokemon> list = pokedexMock.getPokemons();
 
-        assertEquals(pokedex.size(), list.size());
-        assertEquals(pokedex.getPokemon(0).getName(), list.get(0).getName());
+        assertEquals(pokedexMock.size(), list.size());
+        assertEquals(pokedexMock.getPokemon(0).getName(), list.get(0).getName());
 
         try {
             list.add(bulbizarre);
@@ -145,10 +142,10 @@ public class IPokedexTest {
      */
     @Test
     public void testGetPokemonsWithComparator() {
-        pokedex.addPokemon(bulbizarre);
-        pokedex.addPokemon(aquali);
-        List<Pokemon> listOrderedWithName = pokedex.getPokemons(PokemonComparators.NAME);
-        List<Pokemon> listOrderedWithIndex = pokedex.getPokemons(PokemonComparators.INDEX);
+        pokedexMock.addPokemon(bulbizarre);
+        pokedexMock.addPokemon(aquali);
+        List<Pokemon> listOrderedWithName = pokedexMock.getPokemons(PokemonComparators.NAME);
+        List<Pokemon> listOrderedWithIndex = pokedexMock.getPokemons(PokemonComparators.INDEX);
 
         assertEquals(0, listOrderedWithName.indexOf(aquali));
         assertEquals(1, listOrderedWithIndex.indexOf(aquali));
