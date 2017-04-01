@@ -10,11 +10,11 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,29 +48,36 @@ public class IPokedexTest {
             4,
             100
     );
-    protected static Comparator<Pokemon> comparizonName = Comparator.comparing(PokemonMetadata::getName);
-    protected static Comparator<Pokemon> comparizonAtk = Comparator.comparing(PokemonMetadata::getAttack);
+
+    @Mock
+    protected static IPokedex pokedex;
+
+    protected static final int[] pokedex_size = {0};
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws PokedexException {
         MockitoAnnotations.initMocks(this);
-        when(pokedexMock.size()).thenReturn(151);
-        when(pokedexMock.getPokemon(0)).thenReturn(bulbizarre);
-        when(pokedexMock.getPokemon(200)).thenThrow(new PokedexException("Le pokemon n'existe pas. (index invalide)"));
-        List<Pokemon> listeAvecManquant = new ArrayList<>();
-        List<Pokemon> liste = new ArrayList<>();
-        listeAvecManquant.add(bulbizarre);
-        listeAvecManquant.add(aquali);
-        for (int i = 2; i < 151; i++) {
-            listeAvecManquant.add(new Pokemon(0, "manquant", 0, 0, 0, 0, 0, 0, 0, 0));
-        }
-        when(pokedexMock.getPokemons()).thenReturn(Collections.unmodifiableList(listeAvecManquant));
-        liste.add(aquali);
-        liste.add(bulbizarre);
-        when(pokedexMock.getPokemons(comparizonName)).thenReturn(Collections.unmodifiableList(liste));
-        when(pokedexMock.getPokemons(comparizonAtk)).thenReturn(Collections.unmodifiableList(listeAvecManquant));
+        pokedex_size[0] = 0;
+        when(pokedex.size()).thenAnswer(i -> pokedex_size[0]);
+        when(pokedex.addPokemon(any())).then(i -> pokedex_size[0]++);
+
+        when(pokedex.getPokemon(0)).thenReturn(bulbizarre);
+        when(pokedex.getPokemon(1)).thenThrow(new PokedexException("Invalid index"));
+
+        List<Pokemon> list1 = new ArrayList<>();
+        List<Pokemon> list2 = new ArrayList<>();
+        list1.add(bulbizarre);
+        list1.add(aquali);
+
+        when(pokedex.getPokemons()).thenReturn(Collections.unmodifiableList(list1));
+        list2.add(aquali);
+        list2.add(bulbizarre);
+        when(pokedex.getPokemons(any()))
+                .thenReturn(Collections.unmodifiableList(list2))
+                .thenReturn(Collections.unmodifiableList(list1));
     }
 
     /**
@@ -78,7 +85,7 @@ public class IPokedexTest {
      */
     @Test
     public void testSize() {
-        assertEquals(151, pokedexMock.size());
+        assertEquals(0, pokedex.size());
     }
 
     /**
@@ -87,7 +94,10 @@ public class IPokedexTest {
      */
     @Test
     public void testAddPokemon() {
-        assertEquals(0, pokedexMock.addPokemon(bulbizarre));
+        assertEquals(0, pokedex.addPokemon(bulbizarre));
+        assertEquals(1, pokedex.size());
+        assertEquals(1, pokedex.addPokemon(bulbizarre));
+        assertEquals(2, pokedex.size());
     }
 
     /**
@@ -103,9 +113,9 @@ public class IPokedexTest {
             e.printStackTrace();
         }
         try {
-            pokedexMock.getPokemon(200);
+            pokedex.getPokemon(1);
         } catch (PokedexException e) {
-            assertEquals("Le pokemon n'existe pas. (index invalide)", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -113,19 +123,19 @@ public class IPokedexTest {
      * Returns an unmodifiable list of all pokemons this pokedex contains.
      */
     @Test
-    public void testGetPokemons() {
-        List<Pokemon> liste = pokedexMock.getPokemons();
-        assertEquals(pokedexMock.size(), liste.size());
-        try {
-            assertEquals(pokedexMock.getPokemon(0).getName(), liste.get(0).getName());
-        } catch (PokedexException e) {
-            e.printStackTrace();
-        }
+    public void testGetPokemons() throws PokedexException {
+        pokedex.addPokemon(bulbizarre);
+        pokedex.addPokemon(aquali);
+        List<Pokemon> list = pokedex.getPokemons();
+
+        assertEquals(pokedex.size(), list.size());
+        assertEquals(pokedex.getPokemon(0).getName(), list.get(0).getName());
 
         try {
-            liste.add(bulbizarre);
+            list.add(bulbizarre);
+            fail("Expected UnsupportedOperationException to be thrown");
         } catch (UnsupportedOperationException e) {
-            assertTrue(true);
+            e.printStackTrace();
         }
     }
 
@@ -135,11 +145,12 @@ public class IPokedexTest {
      */
     @Test
     public void testGetPokemonsWithComparator() {
-        List<Pokemon> liste = pokedexMock.getPokemons();
-        List<Pokemon> listeOrdonneNom = pokedexMock.getPokemons(comparizonName);
-        List<Pokemon> listeOrdonneAtk = pokedexMock.getPokemons(comparizonAtk);
+        pokedex.addPokemon(bulbizarre);
+        pokedex.addPokemon(aquali);
+        List<Pokemon> listOrderedWithName = pokedex.getPokemons(PokemonComparators.NAME);
+        List<Pokemon> listOrderedWithIndex = pokedex.getPokemons(PokemonComparators.INDEX);
 
-        assertTrue(liste.indexOf(aquali) >= listeOrdonneNom.indexOf(aquali));
-        assertTrue(listeOrdonneNom.indexOf(aquali) <= listeOrdonneAtk.indexOf(aquali));
+        assertEquals(0, listOrderedWithName.indexOf(aquali));
+        assertEquals(1, listOrderedWithIndex.indexOf(aquali));
     }
 }
