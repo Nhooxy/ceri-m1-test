@@ -12,7 +12,7 @@ general:
 
 test:
   override:
-    - mvn test
+    - mvn clean test jacoco:report
   post:
     - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/report/jacoco/jacoco.xml -DprojectToken=${CODACY_PROJECT_TOKEN} -DapiToken=${CODACY_API_TOKEN}
     - tac target/report/jacoco/jacoco.xml
