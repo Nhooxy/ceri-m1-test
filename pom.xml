@@ -45,8 +45,8 @@
                 <artifactId>codacy-maven-plugin</artifactId>
                 <version>1.0.3</version>
                 <configuration>
-                    <apiToken>${env.CODACY_API_TOKEN}</apiToken>
-                    <projectToken>${env.CODACY_PROJECT_TOKEN}</projectToken>
+                    <apiToken>${CODACY_API_TOKEN}</apiToken>
+                    <projectToken>${CODACY_PROJECT_TOKEN}</projectToken>
                     <language>Java</language>
                     <coverageReportFile>target/report/jacoco/jacoco.xml</coverageReportFile>
                     <failOnMissingReportFile>false</failOnMissingReportFile>
