@@ -18,7 +18,5 @@ test:
 test:
     post:
         - mvn jacoco:report
-        - curl http://www.jpm4j.org/install/script > jpmInstall.sh
-        - sudo sh jpmInstall.sh
-        - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
+        - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/report/jacoco/jacoco.xml -DprojectToken=blah -DapiToken=blah
         - codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml
