@@ -31,7 +31,7 @@ public class PokemonMetadataProvider implements IPokemonMetadataProvider {
         if (null == this.doc) {
             this.parseData();
         }
-        JsonObject pokemon = doc.get(index-1).getAsJsonObject();
+        JsonObject pokemon = doc.get(index).getAsJsonObject();
 
         return new PokemonMetadata(
                 index,
