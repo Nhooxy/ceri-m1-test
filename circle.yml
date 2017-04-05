@@ -1,0 +1,18 @@
+## Customize the test machine
+machine:
+  timezone:
+    Europe/Paris
+
+  java:
+    version: oraclejdk8
+
+general:
+  branches:
+    only:
+      - master
+
+test:
+  override:
+    - mvn test
+  post:
+    -mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/report/jacoco/jacoco.xml -DprojectToken=${CODACY_PROJECT_TOKEN} -DapiToken=${CODACY_API_TOKEN}
