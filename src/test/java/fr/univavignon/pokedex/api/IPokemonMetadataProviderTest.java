@@ -30,6 +30,6 @@ public class IPokemonMetadataProviderTest {
      */
     @Test
     public void testGetPokemonMetadata() throws PokedexException {
-        Assert.assertEquals("Bulbizarre", pokemonMetadataProviderMock.getPokemonMetadata(0).getName());
+        Assert.assertEquals("Bulbasaur", pokemonMetadataProviderMock.getPokemonMetadata(1).getName());
     }
 }
