@@ -8,7 +8,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -16,35 +17,28 @@ import static org.mockito.Mockito.when;
  */
 public class IPokemonFactoryTest {
 
-    @Mock
-    protected static IPokemonFactory pokemonFactoryMock;
-    protected static Pokemon bulbizarre = new Pokemon(
-            0,
-            "Bulbizarre",
-            126,
-            126,
-            90,
-            613,
-            64,
-            4000,
-            4,
-            56
-    );
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock
+    protected static IPokedexFactory pokedexFactory;
+
+    @Mock
+    protected static IPokemonMetadataProvider pokemonMetadataProvider;
+
+    @Mock
+    protected static IPokemonFactory pokemonFactory;
 
     @Before
-    public void setUp() throws PokedexException {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
-        when(pokemonFactoryMock.createPokemon(0, 613, 64, 4000, 4)).thenReturn(bulbizarre);
+        IPokedex mockPokedex = mock(IPokedex.class);
+        when(pokedexFactory.createPokedex(pokemonMetadataProvider, pokemonFactory))
+                .thenReturn(mockPokedex);
     }
 
-    /**
-     * Creates a pokemon instance computing it IVs.
-     */
     @Test
-    public void testCreatePokemon() {
-        Pokemon pokemon = pokemonFactoryMock.createPokemon(0, 613, 64, 4000, 4);
-        assertEquals("Bulbizarre", pokemon.getName());
+    public void testCreatePokedex() {
+        IPokedex newPokedex = pokedexFactory.createPokedex(pokemonMetadataProvider, pokemonFactory);
+        assertNotNull(newPokedex);
     }
 }
